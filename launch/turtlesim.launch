@@ -1,0 +1,33 @@
+<launch>
+
+  <arg name="port" default="9090" />
+  
+  <param name="/rosbridge/port" value="$(arg port)"/>
+
+  <node name="ros_mac_authentication" pkg="rosauth" type="ros_mac_authentication" output="screen"> 
+    <param name="secret_file_location" value="$(find rpn)/config/SecretFile.secret" />
+  </node>
+
+  <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+    <param name="authenticate" value="true" />
+  </node>
+  
+  <node name="rosapi" pkg="rosapi" type="rosapi" output="screen"> 
+  </node>
+
+  <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" output="screen">
+  </node>
+  
+  <node name="turtle_server" pkg="rpn" type="turtle_server.py" output="screen">
+    <param name="DB"   value="true" />
+    <param name="user" value="rpn" />
+    <param name="pwd"  value="ti2113dl" />
+    <param name="host" value="localhost" />
+    <param name="database" value="rpn" />
+  </node>
+  
+  <node name="turtle_recorder" pkg="rpn" type="turtle_recorder.py" output="screen">
+    <param name="bag_folder" value="$(find rpn)/sandbox/turtlesim/" />
+  </node>
+  
+</launch>

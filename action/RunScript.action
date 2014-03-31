@@ -1,0 +1,13 @@
+# Define the goal
+string name	 # Module name
+string code  # Script code
+string user_id
+string bagfile
+---
+# Define the result
+int32 return_value
+string name	# Actual filename: module name + time stamp + extension
+string output
+---
+# Define a feedback message
+string output
