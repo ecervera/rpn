@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="port" default="9090" />
+  <arg name="port" default="9091" />
   
   <param name="/rosbridge/port" value="$(arg port)"/>
 
@@ -16,14 +16,6 @@
   </node>
 
   <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" output="screen">
-  </node>
-  
-  <node name="turtle_server" pkg="rpn" type="turtle_server.py" output="screen">
-    <param name="DB"   value="true" />
-    <param name="user" value="rpn" />
-    <param name="pwd"  value="ti2113dl" />
-    <param name="host" value="localhost" />
-    <param name="database" value="rpn" />
   </node>
   
   <node name="turtle_recorder" pkg="rpn" type="turtle_recorder.py" output="screen">

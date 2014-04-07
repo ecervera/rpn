@@ -1,0 +1,11 @@
+<launch>
+  
+  <node name="turtle_server" pkg="rpn" type="turtle_server.py" output="screen">
+    <param name="DB"   value="true" />
+    <param name="user" value="rpn" />
+    <param name="pwd"  value="ti2113dl" />
+    <param name="host" value="localhost" />
+    <param name="database" value="rpn" />
+  </node>
+  
+</launch>

@@ -1,0 +1,7 @@
+<launch>
+
+  <node name="turtle_server" pkg="rpn" type="turtle_server.py" output="screen">
+    <param name="DB"   value="false" />
+  </node>
+  
+</launch>
