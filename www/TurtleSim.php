@@ -30,10 +30,10 @@ if ( $context->valid ) {
         $end = $t + 3600;
     
 	$mac = hash(
-            'sha1',
+            'sha512',
             file_get_contents('../config/SecretFile.secret',NULL, NULL, 0, 16).
             $_SERVER['REMOTE_ADDR'].
-            'localhost'.$salt.$t.
+            $_SERVER['SERVER_NAME'].$salt.$t.
             'user'.$end
         );
 ?>
@@ -63,7 +63,7 @@ if ( $context->valid ) {
         var user_id = "<?php echo $username; ?>" ;
 	var bagfile = '';
 	
-	var rosURL = 'ws://'+location.hostname+':9090';
+	var rosURL = 'ws://'+location.hostname+':9091';
 	var turtleName = '';
 
 	var ros = new ROSLIB.Ros({
@@ -215,6 +215,10 @@ if ( $context->valid ) {
 		});
 		goal.send();
 		runningGoal = goal;
+		console.log('Goal sent.');
+		console.log(user_id);
+		console.log(turtleName);
+		console.log(bagfile);
 	} );
 	
 	$( "#clearOutput" ).button();
