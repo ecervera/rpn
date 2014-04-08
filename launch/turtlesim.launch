@@ -2,14 +2,13 @@
 
   <arg name="port" default="9091" />
   
-  <param name="/rosbridge/port" value="$(arg port)"/>
-
   <node name="ros_mac_authentication" pkg="rosauth" type="ros_mac_authentication" output="screen"> 
     <param name="secret_file_location" value="$(find rpn)/config/SecretFile.secret" />
   </node>
 
   <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
     <param name="authenticate" value="true" />
+    <param name="port" value="$(arg port)"/>
   </node>
   
   <node name="rosapi" pkg="rosapi" type="rosapi" output="screen"> 
