@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 
+import roslib; roslib.load_manifest('rpn')
+
 import rospy
 import rospkg
 import actionlib
 
-from rpn.msg import RunScriptAction, RunScriptResult
+#from rpn.msg import RunScriptAction, RunScriptResult
+#from rpn.msg import *
+import rpn.msg
 from datetime import datetime
 
 import subprocess, os, signal, time
@@ -21,7 +25,7 @@ def terminate_process_and_children(p):
 
 class TurtleServer:
 	def __init__(self):
-		self.server = actionlib.ActionServer('turtlesim_run_script', RunScriptAction, self.execute, self.cancel, False)
+		self.server = actionlib.ActionServer('turtlesim_run_script', rpn.msg.RunScriptAction, self.execute, self.cancel, False)
 		self.goalHandle = {}
 		self.goal = {}
 		self.pm = {}
@@ -35,12 +39,14 @@ class TurtleServer:
 		self.server.start()
 
 	def cancel(self, goalHandle):
+		rospy.loginfo("Cancel callback")
 		goal = goalHandle.get_goal()
 		turtle = goal.name
 		self.cancelled[turtle] = True
 		terminate_process_and_children(self.pm[turtle])
 		
 	def execute(self, goalHandle):
+		rospy.loginfo("Execute callback")
 		goal = goalHandle.get_goal()
 		turtle = goal.name
 		self.goalHandle[turtle] = goalHandle
@@ -56,7 +62,7 @@ class TurtleServer:
 			text_file.write(goal.code)
 		os.chmod(self.filename[turtle]+'.py', 0755)
 				
-		self.result[turtle] = RunScriptResult()
+		self.result[turtle] = rpn.msg.RunScriptResult()
 		self.result[turtle].name = modulename
 		
 		my_env = os.environ
