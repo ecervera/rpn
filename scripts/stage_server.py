@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('r3po')
+import roslib; roslib.load_manifest('rpn')
 
 import rospy
 import actionlib
 
-from r3po.msg import RunScriptAction, RunScriptResult
+from rpn.msg import RunScriptAction, RunScriptResult
 
 import subprocess, os, signal, time
 from datetime import datetime
@@ -52,7 +52,7 @@ class StageServer:
 		self.user_id[bot] = goal.user_id
                 self.bagfile[bot] = goal.bagfile
 		modulename = goal.name + '_' + time.strftime("%Y%m%d_%H%M%S", time.gmtime())
-		self.filename[bot] = '/home/r3po/catkin_ws/src/r3po/sandbox/stage/'+ modulename
+		self.filename[bot] = '/home/rpn/catkin_ws/src/rpn/sandbox/stage/'+ modulename
 
 		goalHandle.set_accepted()
 		
@@ -66,7 +66,7 @@ class StageServer:
 		my_env = os.environ
 		my_env["ROS_NAMESPACE"] = bot
 		with open(self.filename[bot]+'.output', "w") as text_file:
-			self.pm[bot] = subprocess.Popen('rosrun r3po sandbox/stage/' + modulename+'.py',
+			self.pm[bot] = subprocess.Popen('rosrun rpn sandbox/stage/' + modulename+'.py',
 									stdout=text_file,
 									stderr=subprocess.STDOUT,
 									preexec_fn=change_user,

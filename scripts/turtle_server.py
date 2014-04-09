@@ -46,7 +46,7 @@ class TurtleServer:
 		terminate_process_and_children(self.pm[turtle])
 		
 	def execute(self, goalHandle):
-		rospy.loginfo("Execute callback")
+		#rospy.loginfo("Execute callback")
 		goal = goalHandle.get_goal()
 		turtle = goal.name
 		self.goalHandle[turtle] = goalHandle
