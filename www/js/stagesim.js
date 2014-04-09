@@ -47,7 +47,7 @@ var StageSim = (function() {
 				this.context.moveTo(x/mpix+cw/2,-n/mpix+cw/2);
 				this.context.lineTo(x/mpix+cw/2, n/mpix+cw/2);
 				this.context.stroke();
-				this.context.fillText((-x).toString(),x/mpix+cw/2+4,cw/2-4);
+				this.context.fillText(x.toString(),x/mpix+cw/2+4,cw/2-4);
 			}
 			for (var y=-n;y<=n;y++) {
 				this.context.beginPath();
