@@ -1,0 +1,32 @@
+include "erratic.inc"
+
+# the resolution of Stage's raytrace model in meters
+resolution 0.02 
+
+interval_sim 100  # milliseconds per update step
+
+# configure the GUI window
+window
+( 
+  size [ 640 640 ] 
+  center [-0.500 0.000] 
+  scale 50.000 
+)
+
+define floorplan model
+(
+  color "gray30"
+  gui_move 0
+)
+
+# load an environment bitmap
+floorplan
+(
+  name "square_maze"
+  bitmap "square_maze.png"
+  size [10.000 10.000 0.500]
+  pose [0.000 0.000 0.000 0.000]
+)
+
+erratic( pose [ -0.500 -0.500 0.000 90.000 ] name "era" color "blue")
+
