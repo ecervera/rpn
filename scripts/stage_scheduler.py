@@ -22,8 +22,7 @@ def handle_acquire(req):
 		my_env = os.environ
 		my_env["ROS_NAMESPACE"] = stage
 		stage_proc[stage] = []
-		#stage_proc[stage].append(subprocess.Popen('rosrun stage_ros stageros -g $(rospack find rpn)/stage/' + world + ' /clock:=clock',
-		stage_proc[stage].append(subprocess.Popen('rosrun stage_ros stageros $(rospack find rpn)/stage/' + world + ' /clock:=clock',
+		stage_proc[stage].append(subprocess.Popen('rosrun stage_ros stageros -g $(rospack find rpn)/stage/' + world + ' /clock:=clock',
 										env=my_env,
 										shell=True))
 		stage_proc[stage].append(subprocess.Popen('rosrun rpn robot_pose.py',env=my_env,shell=True))
