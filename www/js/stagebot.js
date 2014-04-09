@@ -84,8 +84,10 @@ var StageBot = (function() {
 		if($("#dispTrail").is(':checked')){
 			for (var i=0;i<this.trailX.length-1;i++) {
 			    if (this.trailX[i]!=this.trailX[i+1] || this.trailY[i]!=this.trailY[i+1] || this.trailTH[i]!=this.trailTH[i+1]) {
-				x = -this.trailY[i] / mpix + cw/2;
-				y = -this.trailX[i] / mpix + cw/2;
+				//x = -this.trailY[i] / mpix + cw/2;
+				//y = -this.trailX[i] / mpix + cw/2;
+				x =  this.trailX[i] / mpix + cw/2;
+				y = -this.trailY[i] / mpix + cw/2;
 				this.context.save();
 				this.context.globalAlpha = i/this.trailX.length/2;
 				this.context.translate(x,y);
@@ -103,8 +105,10 @@ var StageBot = (function() {
 		}
 		this.context.globalAlpha = 1.0;
 		this.context.save();
-		var x = -this.y / mpix + cw/2;
-		var y = -this.x / mpix + cw/2;
+		//var x = -this.y / mpix + cw/2;
+		//var y = -this.x / mpix + cw/2;
+		var x =  this.x / mpix + cw/2;
+		var y = -this.y / mpix + cw/2;
 		if ((x!=null)&&(y!=null)) {
 			this.context.translate(x, y);
 			this.context.rotate(-this.th);
@@ -115,9 +119,12 @@ var StageBot = (function() {
 					ctx.beginPath();
 					ctx.fillStyle="rgba(136, 255, 255, 0.5)";
 					ctx.moveTo(0,0);
-					ctx.lineTo(Math.sin(i*Math.PI/6-Math.PI/36)*this.ranger[i]/mpix,Math.cos(i*Math.PI/6-Math.PI/36)*this.ranger[i]/mpix);
-					ctx.lineTo(Math.sin(i*Math.PI/6)*this.ranger[i]/mpix,Math.cos(i*Math.PI/6)*this.ranger[i]/mpix);
-					ctx.lineTo(Math.sin(i*Math.PI/6+Math.PI/36)*this.ranger[i]/mpix,Math.cos(i*Math.PI/6+Math.PI/36)*this.ranger[i]/mpix);
+					//ctx.lineTo(Math.sin(i*Math.PI/6-Math.PI/36)*this.ranger[i]/mpix,Math.cos(i*Math.PI/6-Math.PI/36)*this.ranger[i]/mpix);
+					//ctx.lineTo(Math.sin(i*Math.PI/6)*this.ranger[i]/mpix,Math.cos(i*Math.PI/6)*this.ranger[i]/mpix);
+					//ctx.lineTo(Math.sin(i*Math.PI/6+Math.PI/36)*this.ranger[i]/mpix,Math.cos(i*Math.PI/6+Math.PI/36)*this.ranger[i]/mpix);
+					ctx.lineTo(-Math.cos(i*Math.PI/6-Math.PI/36)*this.ranger[i]/mpix, Math.sin(i*Math.PI/6-Math.PI/36)*this.ranger[i]/mpix);
+					ctx.lineTo(-Math.cos(i*Math.PI/6)*this.ranger[i]/mpix, Math.sin(i*Math.PI/6)*this.ranger[i]/mpix);
+					ctx.lineTo(-Math.cos(i*Math.PI/6+Math.PI/36)*this.ranger[i]/mpix, Math.sin(i*Math.PI/6+Math.PI/36)*this.ranger[i]/mpix);
 					ctx.fill();
 				}
 			}
