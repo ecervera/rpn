@@ -1,0 +1,26 @@
+<launch>
+
+  <arg name="port" default="9092" />
+  
+  <node name="ros_mac_authentication" pkg="rosauth" type="ros_mac_authentication" output="screen"> 
+    <param name="secret_file_location" value="$(find rpn)/config/SecretFile.secret" />
+  </node>
+
+  <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+    <param name="authenticate" value="true" />
+    <param name="port" value="$(arg port)"/>
+  </node>
+  
+  <node name="rosapi" pkg="rosapi" type="rosapi" output="screen"> 
+  </node>
+
+  <param name="/use_sim_time" value="false"/>
+
+  <node name="stage_scheduler" pkg="rpn" type="stage_scheduler.py" output="screen">
+  </node>
+  
+  <node name="stage_recorder" pkg="rpn" type="stage_recorder.py" output="screen">
+    <param name="bag_folder" value="$(find rpn)/sandbox/stage/" />
+  </node>
+  
+</launch>
