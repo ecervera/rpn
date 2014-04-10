@@ -1,0 +1,23 @@
+<launch>
+  <param name="/camera_prefix" type="string" value="/freezer/nao_camera" />
+		
+  <!-- Launch the tracking node -->
+  <node pkg="visp_auto_tracker" type="visp_auto_tracker" name="visp_auto_tracker">
+    <param name="model_path" type="string" value="$(find rpn)/visp" />
+    <param name="model_name" type="string" value="pattern" />
+    <param name="debug_display" type="bool" value="True" />
+	      
+    <remap from="/visp_auto_tracker/camera_info" to="/freezer/nao_camera/camera_info"/>
+    <remap from="/visp_auto_tracker/image_raw" to="/freezer/nao_camera/image_raw"/>	
+    <remap from="/visp_auto_tracker/object_position_covariance" to="/freezer/nao_camera/object_position_covariance"  />
+    <remap from="/visp_auto_tracker/object_position" to="/freezer/nao_camera/object_position"  />		
+    <remap from="/visp_auto_tracker/status" to="/freezer/nao_camera/status"  />
+    <remap from="/visp_auto_tracker/moving_edge_sites" to="/freezer/nao_camera/moving_edge_sites"  />
+    <remap from="/visp_auto_tracker/klt_points_positions" to="/freezer/nao_camera/klt_points_positions"  />
+  </node>
+
+  <!-- Launch the viewer 
+  <node pkg="visp_tracker" type="viewer" name="tracker_mbt_viewer" args="_camera_prefix:=/freezer/nao_camera" output="screen" />
+  -->
+ 
+</launch>

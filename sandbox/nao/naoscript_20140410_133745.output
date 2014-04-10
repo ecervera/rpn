@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/rpn/catkin_ws/src/rpn/sandbox/nao/naoscript_20140410_133745.py", line 2, in <module>
+    from api.nao import *
+  File "/home/rpn/catkin_ws/src/rpn/sandbox/nao/api/nao.py", line 10, in <module>
+    from naoqi import ALProxy
+ImportError: No module named naoqi

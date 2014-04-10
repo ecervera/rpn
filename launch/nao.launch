@@ -1,0 +1,55 @@
+<launch>
+  <env name="PYTHONPATH" value="$(env PYTHONPATH)" /> 
+
+  <arg name="port" default="9094" />
+  
+  <node name="ros_mac_authentication" pkg="rosauth" type="ros_mac_authentication" output="screen"> 
+    <param name="secret_file_location" value="$(find rpn)/config/SecretFile.secret" />
+  </node>
+
+  <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+    <param name="authenticate" value="true" />
+    <param name="port" value="$(arg port)"/>
+  </node>
+  
+  <node name="rosapi" pkg="rosapi" type="rosapi" output="screen"> 
+  </node>
+
+  <node name="mjpeg_server" pkg="mjpeg_server" type="mjpeg_server" output="screen"> 
+  </node>
+
+  <node name="image_proc" pkg="image_proc" type="image_proc" output="screen" ns="/freezer/nao_camera"> 
+  </node>
+
+  <arg name="nao_ip" default="$(optenv NAO_IP 10.1.230.32)" />
+  <arg name="nao_port" default="$(optenv NAO_PORT 9559)" />
+  <arg name="force_python" default="true" />
+
+  <!-- Start nodes in their python variant (only when setting force_python:=true during launch) -->
+  <group if="$(arg force_python)">
+    <node pkg="nao_driver" type="nao_sensors.py" name="nao_sensors" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" ns="freezer" />
+  </group>
+  
+  <!-- Start nodes in their C++ variant (default, when force_python:=false) -->
+  <group unless="$(arg force_python)">
+    <node pkg="nao_driver" type="nao_sensors_cpp" name="nao_sensors" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" ns="freezer" />
+  </group>
+
+  <!-- All other nodes (only exist in one variant) -->
+
+  <node pkg="nao_driver" type="nao_camera.py" name="nao_camera" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen" ns="freezer">
+     <param name="calibration_file_bottom" type="string" value="file://$(find nao_driver)/config/nao_bottom_640x480.yaml"/>
+     <param name="calibration_file_top" type="string" value="file://$(find nao_driver)/config/nao_top_640x480.yaml"/>
+     <param name="resolution" type="int" value="2" /> <!--QQVGA=0, QVGA=1, VGA=2 -->
+     <param name="color_space" type="int" value="11" /> <!-- 9 = YUV422, 11 = RGB, 13 = BGR -->
+     <param name="fps" type="int" value="5" />
+     <param name="camera_switch" type="int" value="0" /> <!-- 0 = top, 1 = bottom -->
+  </node>
+
+  <node pkg="nao_driver" type="nao_walker.py" name="nao_walker" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" ns="freezer" />
+  <node pkg="nao_driver" type="nao_controller.py" name="nao_controller" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" ns="freezer" />
+  <node pkg="nao_driver" type="nao_behaviors.py" name="nao_behaviors" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" ns="freezer" />
+  <node pkg="nao_driver" type="nao_leds.py" name="nao_leds" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" ns="freezer" />
+  <node pkg="nao_driver" type="nao_speech.py" name="nao_speech" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" ns="freezer" />
+
+</launch>
