@@ -1,5 +1,5 @@
 *~
-stage*_*_*.py
-stage*.output
-stage*.bag
+naoscript*_*_*.py
+naoscript*.output
+naoscript*.bag
 
