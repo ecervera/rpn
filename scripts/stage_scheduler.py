@@ -42,7 +42,7 @@ def handle_acquire(req):
 		remap += ' /robot_2/base_scan:=/%s/robot_2/base_scan' % stage
 		remap += ' /robot_2/cmd_vel:=/%s/robot_2/cmd_vel' % stage
 		remap += ' /robot_2/odom:=/%s/robot_2/odom' % stage
-		stage_proc[stage].append(subprocess.Popen('rosrun stage stageros -g $(rospack find rpn)/stage/' + world + ' /clock:=clock' + remap,
+		stage_proc[stage].append(subprocess.Popen('rosrun stage_ros stageros -g $(rospack find rpn)/stage/' + world + ' /clock:=clock' + remap,
 										env=my_env,
 										shell=True))
 		for robot in range(3):		
