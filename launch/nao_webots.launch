@@ -2,6 +2,24 @@
 <launch>
   <env name="PYTHONPATH" value="$(env PYTHONPATH)" /> 
 
+  <arg name="port" default="9095" />
+  
+  <node name="ros_mac_authentication" pkg="rosauth" type="ros_mac_authentication" output="screen"> 
+    <param name="secret_file_location" value="$(find rpn)/config/SecretFile.secret" />
+  </node>
+
+  <node name="rosbridge_websocket" pkg="rosbridge_server" type="rosbridge_websocket" output="screen">
+    <param name="authenticate" value="true" />
+    <param name="port" value="$(arg port)"/>
+  </node>
+  
+  <node name="rosapi" pkg="rosapi" type="rosapi" output="screen"> 
+  </node>
+
+  <node name="mjpeg_server" pkg="mjpeg_server" type="mjpeg_server" output="screen"> 
+    <param name="port" value="8181"/>
+  </node>
+
   <arg name="nao_ip" default="$(optenv NAO_IP 10.1.230.26)" />
   <arg name="nao_port" default="$(optenv NAO_PORT 9559)" />
   <node pkg="nao_driver" type="nao_camera.py" name="nao_camera" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen" ns="nao1">
