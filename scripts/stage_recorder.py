@@ -19,7 +19,7 @@ def handle_start(req):
     bot = req.name
     modulename = bot + '_' + time.strftime("%Y%m%d_%H%M%S", time.gmtime())
     filename = rospy.get_param('~bag_folder') + modulename + '.bag'
-    rosbag_proc[bot] = subprocess.Popen(['/opt/ros/groovy/bin/rosbag','record','rosout',bot+'/base_pose_ground_truth',bot+'/pose',bot+'/base_scan',bot+'/cmd_vel',bot+'/odom','--duration', '1800', '-O',filename])
+    rosbag_proc[bot] = subprocess.Popen(['/opt/ros/hydro/bin/rosbag','record','rosout',bot+'/base_pose_ground_truth',bot+'/pose',bot+'/base_scan',bot+'/cmd_vel',bot+'/odom','--duration', '1800', '-O',filename])
     return BotStartRecordResponse(0,filename)
 
 def handle_stop(req):
