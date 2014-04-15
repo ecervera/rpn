@@ -48,10 +48,15 @@ def moveXY(vx,vy,w):
 	cmd_vel_publisher.publish(twist)
 
 def getPosition():
-	return odom_pose_pose_position
+	position = odom_pose_pose_position
+	x = position.x
+	y = position.y
+	return (x,y)
 
 def getOrientation():
-	return odom_pose_pose_orientation
+	orientation = odom_pose_pose_orientation
+	th = 2*math.atan2(orientation.z,orientation.w)
+	return th
 
 def getPose():
 	position = odom_pose_pose_position
