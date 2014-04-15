@@ -184,10 +184,58 @@ if ( $context->valid ) {
 		$( "#moduleRun" ).button();
 		$( "#moduleStop" ).button();
 		$( "#moduleStop" ).button('disable');
+		$( "#moduleReset" ).button();
 		$( "#dispGrid" ).button();
 		$( "#dispData" ).button();
 		$( "#dispTrail" ).button();
 		
+		$( "#moduleReset" ).on( "click", function( event, ui ) {
+			var killBot = new ROSLIB.Service({
+				ros : ros,
+				name : '/stage_scheduler/release',
+				serviceType : 'rpn/Release'
+			});
+			var request = new ROSLIB.ServiceRequest({
+				name : botName
+			});
+			var stopBotRecord = new ROSLIB.Service({
+				ros : ros,
+				name : '/stage_recorder/stop',
+				serviceType : 'rpn/BotStopRecord'
+			});
+			stageSim.killBot(botName);
+			killBot.callService(request, function(){
+				stopBotRecord.callService(request, function(result){
+					var spawnBot = new ROSLIB.Service({
+						ros : ros,
+						name : '/stage_scheduler/acquire',
+						serviceType : 'rpn/Acquire'
+					});
+	
+					var request = new ROSLIB.ServiceRequest({
+						world : world
+					});
+	
+					spawnBot.callService(request, function(result){
+						botName = result.name;
+			
+						stageSim.spawnBot(botName,'bot.png');
+			
+						var startBotRecord = new ROSLIB.Service({
+							ros : ros,
+							name : '/stage_recorder/start',
+							serviceType : 'rpn/BotStartRecord'
+						});
+						var reqrec = new ROSLIB.ServiceRequest({
+							name : botName
+						});
+						startBotRecord.callService(reqrec, function(result){
+						});
+					});
+				});
+			});	
+		} );
+
 		$( "#moduleStop" ).on( "click", function( event, ui ) {
 			runningGoal.cancel();
 		} );
@@ -195,6 +243,7 @@ if ( $context->valid ) {
 		$( "#moduleRun" ).on( "click", function( event, ui ) {
 			$( "#moduleRun" ).button('disable');
 			$( "#moduleStop" ).button('enable');
+			$( "#moduleReset" ).button('disable');
 			var goal = new ROSLIB.Goal({
 				actionClient : runscClient,
 				goalMessage : {
@@ -225,6 +274,7 @@ if ( $context->valid ) {
 				}
 				$( "#moduleRun" ).button('enable');
 				$( "#moduleStop" ).button('disable');
+				$( "#moduleReset" ).button('enable');
 			});
 			goal.send();
 			runningGoal = goal;
@@ -270,6 +320,7 @@ start()
 			<input type="checkbox" id="dispTrail"><label for="dispTrail">Trail</label>
 			<div id="moduleRun">Run</div>
 			<div id="moduleStop">Stop</div>
+			<div id="moduleReset">Reset</div>
 		</td>
 		<td >Output:<br>
 			<textarea readonly rows="5" cols="50" style="overflow:auto;resize:vertical" id="moduleOutput"></textarea>

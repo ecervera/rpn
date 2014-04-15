@@ -22,8 +22,17 @@ var StageSim = (function() {
 			index   : that.bot.length,
 			background : that.background,
 			image : image,
-			mpix : that.mpix
+			mpix : that.mpix,
+			killed : false
 		}));
+	};
+
+	StageSim.prototype.killBot = function(name) {
+		for (var i=0;i<this.bot.length;i++) {
+			if (this.bot[i].name == name) {
+				this.bot[i].killed = true;
+			};
+		};
 	};
 
  	StageSim.prototype.draw = function() {
@@ -59,7 +68,9 @@ var StageSim = (function() {
 		}
  		//this.bot.draw();
 		for (var i=0;i<this.bot.length;i++) {
-			this.bot[i].draw();
+			if (this.bot[i].killed==false) {
+				this.bot[i].draw();
+			}
 		}
  	};
 	return StageSim;

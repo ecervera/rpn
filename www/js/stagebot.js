@@ -10,6 +10,7 @@ var StageBot = (function() {
 		that.sim = options.sim;
 		that.index = options.index;
 		that.mpix = options.mpix;
+		that.killed = options.killed;
 		that.x = null;
 		that.y = null;
 		that.th = null;
@@ -60,7 +61,8 @@ var StageBot = (function() {
 					}
 				//}
 			}
-			if (that.index==0) {
+			//if (that.index==0) {
+			if (that.index==that.sim.bot.length-1) {
 				that.sim.draw();
 			}
 			//console.log('x:'+that.x+ ' y:'+that.y);
