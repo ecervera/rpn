@@ -259,11 +259,6 @@ start()
 
 # Write your commands here
 
-for i in range(10):
-    forward(1)
-    sleep(0.1)
-
-stop()
 
 </textarea>
 		</td>
