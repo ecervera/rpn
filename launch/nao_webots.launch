@@ -21,7 +21,7 @@
   </node>
 
   <arg name="nao_ip" default="$(optenv NAO_IP 10.1.230.26)" />
-  <arg name="nao_port" default="$(optenv NAO_PORT 9559)" />
+  <arg name="nao_port" default="$(optenv NAO_PORT 9560)" />
   <node pkg="nao_driver" type="nao_camera.py" name="nao_camera" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen" ns="nao1">
      <param name="calibration_file_bottom" type="string" value="file://$(find nao_driver)/config/nao_bottom_640x480.yaml"/>
      <param name="calibration_file_top" type="string" value="file://$(find nao_driver)/config/nao_top_640x480.yaml"/>
