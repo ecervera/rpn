@@ -49,11 +49,11 @@ if ( $context->valid ) {
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 
-	<script src="http://cdn.robotwebtools.org/EaselJS/current/easeljs.min.js"></script>
-	<script src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-	<script src="http://cdn.robotwebtools.org/mjpegcanvasjs/current/mjpegcanvas.min.js"></script>
-	<script src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
-	<script src="http://cdn.robotwebtools.org/ros2djs/current/ros2d.min.js"></script>
+	<script src="js/robotwebtools/EaselJS/current/easeljs.min.js"></script>
+	<script src="js/robotwebtools/EventEmitter2/current/eventemitter2.min.js"></script>
+	<script src="js/robotwebtools/mjpegcanvasjs/current/mjpegcanvas.min.js"></script>
+	<script src="js/robotwebtools/roslibjs/current/roslib.min.js"></script>
+	<script src="js/robotwebtools/ros2djs/current/ros2d.min.js"></script>
 		
 	<script src="js/codemirror.js"></script>
 	<script src="./mode/python/python.js"></script>
