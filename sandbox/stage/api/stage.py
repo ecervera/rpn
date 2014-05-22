@@ -13,7 +13,9 @@ def loginfo(s=''):
 def display(s=''):
 	loginfo(s)
 
-def sleep(t=1.0):
+def sleep(t=0.2,warn=True):
+	if warn and t>0.2:
+		loginfo('Warning: sleep time greater than watchdog timeout, robot may stop!\n')
 	rospy.sleep(t)
 
 def callback_base_scan(data):
@@ -32,13 +34,17 @@ def start():
 	rospy.Subscriber("base_scan", LaserScan, callback_base_scan)
 	#rospy.Subscriber("odom", Odometry, callback_odom)
 	rospy.Subscriber("base_pose_ground_truth", Odometry, callback_odom)
-	sleep(1.0)
+	sleep(1.0,False)
 
 def move(v,w):
 	twist = Twist()
 	twist.linear.x = v
 	twist.angular.z = w
 	cmd_vel_publisher.publish(twist)
+	if v>1.0 or v<-1.0:
+		loginfo("Warning: linear velocity out of bounds! (-1, +1 m/s)\n")
+	if w>math.pi/2 or w<-math.pi/2:
+		loginfo("Warning: angular velocity out of bounds! (-90, +90 deg/s)\n")
 
 def moveXY(vx,vy,w):
 	twist = Twist()
@@ -157,6 +163,6 @@ def start_multi():
 	robot_0.start()
 	robot_1.start()
 	robot_2.start()
-	sleep(1.0)
+	sleep(1.0,False)
 
 
