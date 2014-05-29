@@ -68,7 +68,7 @@ class TurtleServer:
 		my_env = os.environ
 		my_env["ROS_NAMESPACE"] = turtle
 		with open(self.filename[turtle]+'.output', "w") as text_file:
-			self.pm[turtle] = subprocess.Popen('rosrun rpn sandbox/turtlesim/' + modulename + '.py',
+			self.pm[turtle] = subprocess.Popen('timeout -s 9 900 rosrun rpn sandbox/turtlesim/' + modulename + '.py',
 									stdout=text_file,
 									stderr=subprocess.STDOUT,
 									env=my_env,
