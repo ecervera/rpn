@@ -66,7 +66,7 @@ class StageServer:
 		my_env = os.environ
 		my_env["ROS_NAMESPACE"] = bot
 		with open(self.filename[bot]+'.output', "w") as text_file:
-			self.pm[bot] = subprocess.Popen('rosrun rpn sandbox/stage/' + modulename+'.py',
+			self.pm[bot] = subprocess.Popen('timeout -s 9 900 rosrun rpn sandbox/stage/' + modulename+'.py',
 									stdout=text_file,
 									stderr=subprocess.STDOUT,
 									preexec_fn=change_user,
