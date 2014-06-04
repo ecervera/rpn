@@ -3,7 +3,7 @@
 import rospy
 import math
 
-from geometry_msgs.msg import Twist 
+from geometry_msgs.msg import Twist, PoseStamped 
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 
@@ -28,13 +28,27 @@ def callback_odom(data):
 	odom_pose_pose_orientation = data.pose.pose.orientation
 
 def start():
-	global cmd_vel_publisher
+	global cmd_vel_publisher, move_simple_base
 	rospy.init_node('stage_controller', anonymous=True)
 	cmd_vel_publisher = rospy.Publisher('cmd_vel', Twist)
 	rospy.Subscriber("base_scan", LaserScan, callback_base_scan)
 	#rospy.Subscriber("odom", Odometry, callback_odom)
 	rospy.Subscriber("base_pose_ground_truth", Odometry, callback_odom)
+	move_simple_base = rospy.Publisher("move_base_simple/goal", PoseStamped)
 	sleep(1.0,False)
+
+def goto(x,y,th):
+	ps = PoseStamped()
+	ps.header.frame_id = "map"
+	ps.header.stamp = rospy.Time.now()
+	ps.pose.position.x = x+5.7
+	ps.pose.position.y = y+5.4
+	ps.pose.position.z = 0
+	ps.pose.orientation.x = 0
+	ps.pose.orientation.y = 0
+	ps.pose.orientation.z = math.sin(th/2)
+	ps.pose.orientation.w = math.cos(th/2)
+	move_simple_base.publish(ps)
 
 def move(v,w):
 	twist = Twist()
