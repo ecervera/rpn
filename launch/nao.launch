@@ -21,7 +21,7 @@
   <node name="image_proc" pkg="image_proc" type="image_proc" output="screen" ns="/freezer/nao_camera"> 
   </node>
 
-  <arg name="nao_ip" default="$(optenv NAO_IP 10.1.230.32)" />
+  <arg name="nao_ip" default="$(optenv NAO_IP 10.1.230.100)" />
   <arg name="nao_port" default="$(optenv NAO_PORT 9559)" />
   <arg name="force_python" default="true" />
 

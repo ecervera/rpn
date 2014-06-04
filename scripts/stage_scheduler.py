@@ -11,25 +11,36 @@ def terminate_process_and_children(p):
     assert retcode == 0, "ps command returned %d" % retcode
     for pid_str in ps_output.split("\n")[:-1]:
             os.kill(int(pid_str), signal.SIGINT)
+            #print "Killed %d \n" % int(pid_str)
     p.terminate()
 
 def handle_acquire(req):
 	global stage_proc, number
 	stage = 'stage'+str(number)
 	number = number + 1
-	world = req.world + '.world'
+	world = req.world 
+	my_env = os.environ
+	my_env["ROS_NAMESPACE"] = stage
+	stage_proc[stage] = []
 	if world.find('multi')==-1:
-		my_env = os.environ
-		my_env["ROS_NAMESPACE"] = stage
-		stage_proc[stage] = []
-		stage_proc[stage].append(subprocess.Popen('rosrun stage_ros stageros -g $(rospack find rpn)/stage/' + world + ' /clock:=clock',
+		if world.find('nav')==-1:
+			world = world + '.world'
+			stage_proc[stage].append(subprocess.Popen('rosrun stage_ros stageros -g $(rospack find rpn)/stage/' + world + ' /clock:=clock',
 										env=my_env,
 										shell=True))
-		stage_proc[stage].append(subprocess.Popen('rosrun rpn robot_pose.py',env=my_env,shell=True))
+			stage_proc[stage].append(subprocess.Popen('rosrun rpn robot_pose.py /clock:=clock',env=my_env,shell=True))
+		else:
+			pos = world.find("_")+1
+			world = world[pos:] + '/' + world[pos:] + '.launch'
+			#world = world[pos:] 
+			stage_proc[stage].append(subprocess.Popen('roslaunch $(rospack find rpn)/stage/nav/' + world, env=my_env, shell=True))
+			#stage_proc[stage].append(subprocess.Popen('rosrun map_server map_server $(rospack find rpn)/stage/nav/' + world + '/map.yaml',env=my_env,shell=True))
+			#stage_proc[stage].append(subprocess.Popen('rosrun rpn robot_pose.py',env=my_env,shell=True))
+			#stage_proc[stage].append(subprocess.Popen('rosrun amcl amcl _initial_pose_x:=-1 _initial_pose_y:=-1 _odom_model_type:=omni scan:=base_scan',env=my_env,shell=True))
+			#stage_proc[stage].append(subprocess.Popen('rosrun move_base move_base',env=my_env,shell=True))
+			#stage_proc[stage].append(subprocess.Popen('rosrun stage_ros stageros -g $(rospack find rpn)/stage/nav/' + world + '/' + world + '.world' + ' /clock:=/'+stage+'/clock', env=my_env,shell=True))
 	else:
-		my_env = os.environ
-		my_env["ROS_NAMESPACE"] = stage
-		stage_proc[stage] = []
+		world = world + '.world'
 		remap =  ' /robot_0/base_pose_ground_truth:=/%s/robot_0/base_pose_ground_truth' % stage
 		remap += ' /robot_0/base_scan:=/%s/robot_0/base_scan' % stage
 		remap += ' /robot_0/cmd_vel:=/%s/robot_0/cmd_vel' % stage
@@ -49,7 +60,7 @@ def handle_acquire(req):
 			my_env["ROS_NAMESPACE"] = stage + ('/robot_%s' % robot)
 			stage_proc[stage].append(subprocess.Popen('rosrun rpn robot_pose.py',env=my_env,shell=True))
 
-	subprocess.Popen('sleep 1; rosparam set /use_sim_time false',shell=True)
+	#subprocess.Popen('sleep 1; rosparam set /use_sim_time false',shell=True)
 	return AcquireResponse(stage)
 
 def handle_release(req):
