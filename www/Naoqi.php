@@ -58,9 +58,6 @@ if ( $context->valid ) {
 	<script src="js/codemirror.js"></script>
 	<script src="./mode/python/python.js"></script>
 	
-	<script src="js/Nav2D.js"></script>
-	<script src="js/navigator/Navigator.js"></script>
-	<script src="js/navigator/OccupancyGridClientNav.js"></script>
 	
 	<script>
 
@@ -84,47 +81,6 @@ if ( $context->valid ) {
 	var end = <?php echo $end; ?>;
 
 	ros.authenticate(mac, client, dest, rand, t, level, end);
-
-	var overlay = document.createElement("canvas");
-	overlay.width=320;
-	overlay.height=240;
-	var ovctx = overlay.getContext("2d");
-	ovctx.strokeStyle = "00FF00";
-
-	listenerTracker = new ROSLIB.Topic({
-			ros : ros,
-			name : '/freezer/nao_camera/object_position',
-			messageType : 'geometry_msgs/PoseStamped'
-		});
-	listenerTracker.subscribe(function(msg) {
-		var x = msg.pose.position.x;
-		var y = msg.pose.position.y;
-		var z = msg.pose.position.z;
-		var f = 554;
-		var u = f*x/z + 320;
-		var v = f*y/z + 240;
-		u = u / 2;
-		v = v / 2;
-		ovctx.clearRect(0,0,320,240);
-		ovctx.beginPath();
-		ovctx.moveTo(u-5,v);
-		ovctx.lineTo(u+5,v);
-		ovctx.stroke();
-		ovctx.beginPath();
-		ovctx.moveTo(u,v-5);
-		ovctx.lineTo(u,v+5);
-		ovctx.stroke();
-	});
-
-    // Create the main viewer.
-    var viewer = new MJPEGCANVAS.Viewer({
-      divID : 'mjpeg',
-      host : 'robotprogramming.uji.es',
-      width : 320,
-      height : 240,
-      topic : '/freezer/nao_camera/image_raw',
-      overlay : overlay
-    });
 
 	var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("moduleCode"),{
 		lineNumbers : true
@@ -191,15 +147,10 @@ if ( $context->valid ) {
 <body>
 	<table>
 		<tr>
-			<td>
-			</td>
 			<td>Python script:
 			</td>
 		</tr>
 		<tr>
-			<td>				
-				<div id="mjpeg"></div>
-			</td>
 			<td bgcolor="#000000" >
 				<textarea  rows="40" cols="50" id="moduleCode">
 #!/usr/bin/env python
@@ -225,13 +176,13 @@ time.sleep(1.0)
 			<div id="moduleRun">Run</div>
 			<div id="moduleStop">Stop</div>
 		</td>
+		</tr>
+		<tr>
 		<td >Output:<br>
 			<textarea readonly rows="10" cols="50" style="overflow:auto;resize:vertical" id="moduleOutput"></textarea>
 	</td>
 	</tr>
 	<tr>
-		<td>
-		</td>
 		<td align="center">
 			<div id="clearOutput">Clear output</div>
 		</td>
